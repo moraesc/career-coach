@@ -1,0 +1,29 @@
+name: Reminder - Update career files
+
+on:
+  schedule:
+    # Runs every Friday at 12:00 PM PST (20:00 UTC)
+    - cron: '0 20 * * 5'
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  create-reminder-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: List files in .github
+        run: ls -l .github
+
+      - name: Create reminder issue
+        uses: peter-evans/create-issue-from-file@v4
+        with:
+          title: "Weekly Reminder: Update your career markdown files"
+          content-filepath: .github/reminder.md
+          labels: reminder, automated
+          assignees: moraesc
